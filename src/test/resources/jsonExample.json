@@ -1,0 +1,21 @@
+{
+	"result": true,
+	"data": {
+		"name": "Кондиционер (сплит-система) Dantex RK-24 SFM настенный",
+		"sku": "5336636",
+		"offers": {
+			"url": "https://www.dns-shop.ru/product/00c03632eda72ff2/kondicioner-split-sistema-dantex-rk-24-sfm-nastennyj/",
+			"price": 79999,
+			"priceCurrency": "RUB"
+		},
+		"aggregateRating": {
+			"ratingValue": 5,
+			"worstRating": 0,
+			"bestRating": 5,
+			"reviewCount": 1
+		},
+		"brand": {
+			"name": "Dantex"
+		}
+	}
+}
