@@ -2,6 +2,8 @@ package tests;
 
 import com.codeborne.pdftest.PDF;
 import com.codeborne.xlstest.XLS;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencsv.CSVReader;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,8 +18,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class ZipReadingTest {
-    ClassLoader classLoader = ZipReadingTest.class.getClassLoader();
+public class FilesTests {
+    ClassLoader classLoader = FilesTests.class.getClassLoader();
 
     @Test
     @DisplayName("Проверка чтения файлов из zip-архива")
@@ -69,6 +71,33 @@ public class ZipReadingTest {
                         }
                         );
             }
+        }
+    }
+
+    @Test
+    @DisplayName("Проверка чтения json")
+    void jsonTest() throws Exception {
+        InputStream is = classLoader.getResourceAsStream("jsonExample.json");
+        ObjectMapper mapper = new ObjectMapper();
+        assert is != null;
+        JsonNode jsonNode = mapper.readTree(new InputStreamReader(is));
+        assertThat(jsonNode.findValue("result").asBoolean()).isEqualTo(true);
+        assertThat(jsonNode.findValue("name").asText())
+                .isEqualTo("Кондиционер (сплит-система) Dantex RK-24 SFM настенный");
+        int i = 0;
+        while (i < jsonNode.size()) {
+            if (jsonNode.findValue("offers").get(i)
+                    .findValue("priceCurrency").asText().equals("RUB"))
+            {
+                assertThat(jsonNode.findValue("offers").get(i)
+                        .findValue("price").asInt()).isEqualTo(79999);
+            } else if (jsonNode.findValue("offers").get(i)
+                    .findValue("priceCurrency").asText().equals("KZT"))
+            {
+                assertThat(jsonNode.findValue("offers").get(i)
+                        .findValue("price").asInt()).isEqualTo(688759);
+            }
+            i++;
         }
     }
 }
